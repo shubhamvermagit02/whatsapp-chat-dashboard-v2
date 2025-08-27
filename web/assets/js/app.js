@@ -44,8 +44,21 @@
   const emojiPanel = document.getElementById('emojiPanel');
 
   // routing
-  const routeButtons = Array.from(document.querySelectorAll('.nav-link, .route-btn'));
   const routes = Array.from(document.querySelectorAll('.route'));
+  const sidebar = document.querySelector('.sidebar[data-auto-tabs="true"]');
+  if(sidebar){
+    sidebar.innerHTML = '';
+    routes.forEach(r => {
+      const routeId = r.id.replace('route-','');
+      const title = r.getAttribute('data-title') || routeId;
+      const btn = document.createElement('button');
+      btn.className = 'nav-link' + (r.classList.contains('show') ? ' active' : '');
+      btn.setAttribute('data-route', routeId);
+      btn.textContent = title;
+      sidebar.appendChild(btn);
+    });
+  }
+  let routeButtons = Array.from(document.querySelectorAll('.nav-link, .route-btn'));
 
   const widget = document.getElementById('widget');
   const wbtn = document.getElementById('wbtn');
@@ -137,12 +150,15 @@
   if(!localStorage.getItem(GUIDE_KEY)) showBanner();
 
   // Routes
-  routeButtons.forEach(btn => btn.addEventListener('click', (e) => {
-    const target = e.currentTarget.getAttribute('data-route');
-    if(!target) return;
-    routes.forEach(r => r.classList.toggle('show', r.id === `route-${target}`));
-    document.querySelectorAll('.nav-link').forEach(b => b.classList.toggle('active', b.getAttribute('data-route') === target));
-  }));
+  function wireRoutes(){
+    routeButtons.forEach(btn => btn.addEventListener('click', (e) => {
+      const target = e.currentTarget.getAttribute('data-route');
+      if(!target) return;
+      routes.forEach(r => r.classList.toggle('show', r.id === `route-${target}`));
+      document.querySelectorAll('.nav-link').forEach(b => b.classList.toggle('active', b.getAttribute('data-route') === target));
+    }));
+  }
+  wireRoutes();
 
   // Events
   const phoneErrorEl = phoneError;
