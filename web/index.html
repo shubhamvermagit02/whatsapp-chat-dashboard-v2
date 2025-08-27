@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WhatsApp Chat Dashboard</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <!-- Top Navigation / Title Bar -->
+  <header class="app-header">
+    <div class="app-header__left">
+      <div class="brand">
+        <span class="brand__icon" aria-hidden="true">💬</span>
+        <span class="brand__name">WhatsApp Chat Dashboard</span>
+      </div>
+    </div>
+    <nav class="app-header__right" aria-label="Primary">
+      <a class="btn btn--ghost" href="https://way2enjoy.com/shopify/1/whatsapp-chat/plans/upgrade_donate4.php" target="_blank" rel="noopener">Upgrade</a>
+      <a class="btn btn--ghost" href="https://way2enjoy.com/shopify/1/whatsapp-chat/review_reryrtyrct.php" target="_blank" rel="noopener">Rate Us</a>
+      <a class="btn btn--ghost" href="https://web.whatsapp.com/send?phone=917980730935&text=Feel_Free_to_Ask_any_question" target="_blank" rel="noopener">Support</a>
+      <a class="btn btn--primary" href="https://way2enjoy.com/shopify/1/whatsapp-chat/rate_list.html" target="_blank" rel="noopener">Rate Chart</a>
+    </nav>
+  </header>
+
+  <!-- Onboarding Banner -->
+  <div id="configBanner" class="banner banner--hidden" role="region" aria-label="Setup guide">
+    <div class="banner__content">
+      <div class="banner__text">
+        <h2 id="stepTitle" class="banner__title">Step 1: Connect your WhatsApp number</h2>
+        <p id="stepDescription" class="banner__desc">Include ISD code for your country. No + or 00 required.</p>
+      </div>
+      <div class="banner__controls">
+        <div class="steps" aria-label="Steps">
+          <span class="step step--active" data-step="1"></span>
+          <span class="step" data-step="2"></span>
+          <span class="step" data-step="3"></span>
+          <span class="step" data-step="4"></span>
+          <span class="step" data-step="5"></span>
+          <span class="step" data-step="6"></span>
+        </div>
+        <button id="prevButton" class="btn btn--secondary hidden">Previous</button>
+        <button id="nextButton" class="btn btn--primary">Next</button>
+        <button id="exitButton" class="icon-btn" aria-label="Close setup">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Sections">
+      <button class="nav-link active" data-route="dashboard">Dashboard</button>
+      <button class="nav-link" data-route="widget">Chat Widget</button>
+      <button class="nav-link" data-route="automations">Automations</button>
+      <button class="nav-link" data-route="analytics">Analytics</button>
+      <button class="nav-link" data-route="support">Support</button>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <!-- Dashboard -->
+      <section id="route-dashboard" class="route show">
+        <div class="kpis">
+          <div class="kpi"><div class="kpi__label">Total Clicks</div><div id="kpiClicks" class="kpi__value">0</div></div>
+          <div class="kpi"><div class="kpi__label">Unique Visitors</div><div id="kpiVisitors" class="kpi__value">0</div></div>
+          <div class="kpi"><div class="kpi__label">CTR</div><div id="kpiCtr" class="kpi__value">0%</div></div>
+          <div class="kpi"><div class="kpi__label">Conversions</div><div id="kpiConv" class="kpi__value">0</div></div>
+        </div>
+
+        <div class="card" aria-labelledby="chartTitle">
+          <h3 id="chartTitle" class="card__title">Activity (Last 7 Days)</h3>
+          <canvas id="chart" width="900" height="320" aria-label="Clicks chart"></canvas>
+        </div>
+
+        <div class="card">
+          <h3 class="card__title">Quick Start</h3>
+          <ol class="qs">
+            <li>Enter your WhatsApp number and message in Chat Widget.</li>
+            <li>Customize color, position, and size.</li>
+            <li>Save and use Test Links to verify.</li>
+          </ol>
+          <button data-route="widget" class="btn btn--primary route-btn">Go to Chat Widget</button>
+        </div>
+      </section>
+
+      <!-- Chat Widget -->
+      <section id="route-widget" class="route">
+        <div class="grid">
+          <div class="card" aria-labelledby="configTitle">
+            <h3 id="configTitle" class="card__title">Configuration</h3>
+
+            <div class="form-group">
+              <label for="phoneInput">WhatsApp Number (with ISD, digits only)</label>
+              <input id="phoneInput" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 919876543210" />
+              <small class="help">Do not include + or 00. Example for India: 91XXXXXXXXXX</small>
+              <div id="phoneError" class="error hidden">Enter 8–15 digits (ISD + number).</div>
+            </div>
+
+            <div class="form-group">
+              <label for="messageInput">Prefilled Message</label>
+              <div class="emoji-row">
+                <textarea id="messageInput" rows="3" placeholder="Hello! I have a question about..."></textarea>
+                <button id="emojiBtn" class="icon-btn" aria-label="Insert emoji">😊</button>
+                <div id="emojiPanel" class="emoji-panel hidden" role="menu" aria-label="Emoji picker"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="colorInput">Theme Color</label>
+                <input id="colorInput" type="color" value="#25D366" />
+              </div>
+              <div class="form-group">
+                <label for="positionSelect">Position</label>
+                <select id="positionSelect">
+                  <option value="bottom-right">Bottom Right</option>
+                  <option value="bottom-left">Bottom Left</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="sizeRange">Button Size: <span id="sizeValue">56</span>px</label>
+                <input id="sizeRange" type="range" min="44" max="84" step="2" value="56" />
+              </div>
+              <div class="form-group">
+                <label for="shapeSelect">Shape</label>
+                <select id="shapeSelect">
+                  <option value="round">Round</option>
+                  <option value="squircle">Squircle</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group form-group--inline">
+                <label class="switch">
+                  <input id="badgeToggle" type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+                <span class="switch-label">Show Badge</span>
+              </div>
+              <div class="form-group">
+                <label for="badgeCount">Badge Count</label>
+                <input id="badgeCount" type="number" min="0" max="9" value="1" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="availStart">Availability Start</label>
+                <input id="availStart" type="time" value="09:00" />
+              </div>
+              <div class="form-group">
+                <label for="availEnd">Availability End</label>
+                <input id="availEnd" type="time" value="18:00" />
+              </div>
+            </div>
+
+            <div class="form-group form-group--inline">
+              <label class="switch">
+                <input id="enabledToggle" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+              <span class="switch-label">Enable WhatsApp Chat Widget</span>
+            </div>
+
+            <div class="actions">
+              <button id="saveBtn" class="btn btn--primary">Save Settings</button>
+              <button id="resetBtn" class="btn btn--secondary">Reset</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="test-links">
+              <h4>Test Links</h4>
+              <div class="test-links__row">
+                <a id="testWeb" class="btn btn--ghost" href="#" target="_blank" rel="noopener">Open in WhatsApp Web</a>
+                <a id="testMobile" class="btn btn--ghost" href="#" target="_blank" rel="noopener">Open on Mobile (wa.me)</a>
+              </div>
+              <div class="embed">
+                <h4>Install Snippet</h4>
+                <pre class="code" aria-label="Embed code"><code>&lt;script src="/path/to/your/whatsapp-widget.js" async&gt;&lt;/script&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Preview -->
+          <div class="card" aria-labelledby="previewTitle">
+            <h3 id="previewTitle" class="card__title">Live Preview</h3>
+            <div class="preview">
+              <div class="phone">
+                <div class="phone__screen">
+                  <div id="widget" class="widget widget--br" aria-label="WhatsApp widget" title="Chat with us">
+                    <button id="wbtn" class="widget__button" aria-label="Open WhatsApp chat">
+                      <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M19.11 17.25c-.25-.12-1.47-.72-1.7-.8-.23-.08-.4-.12-.57.12-.17.23-.65.8-.8.96-.15.17-.3.18-.55.06-.25-.12-1.06-.39-2.03-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.23-.02-.38.1-.5.1-.1.23-.27.35-.4.12-.13.15-.23.23-.38.08-.17.04-.3-.02-.42-.06-.12-.57-1.38-.78-1.88-.2-.48-.4-.42-.57-.43l-.48-.01c-.17 0-.42.06-.64.3-.22.23-.84.82-.84 2 0 1.17.86 2.3.98 2.46.12.16 1.7 2.58 4.12 3.61 2.42 1.03 2.42.69 2.86.66.44-.03 1.47-.6 1.68-1.19.2-.6.2-1.1.15-1.19-.06-.1-.22-.16-.47-.28zM16 3c-7.18 0-13 5.82-13 13 0 2.29.6 4.44 1.66 6.3L3 29l6.86-1.8A12.96 12.96 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 24c-2.27 0-4.38-.66-6.15-1.8l-.44-.27-4.08 1.07 1.09-3.98-.29-.44A10.98 10.98 0 0 1 5 16C5 10.48 9.48 6 15 6s10 4.48 10 10-4.48 11-9 11z"/></svg>
+                    </button>
+                    <div id="wbadge" class="widget__badge">1</div>
+                  </div>
+
+                  <!-- Chat window mock -->
+                  <div id="chatWindow" class="chat hidden" role="dialog" aria-label="Chat window">
+                    <div class="chat__header">
+                      <div class="chat__avatar">🟢</div>
+                      <div class="chat__meta">
+                        <div class="chat__title">We’re online</div>
+                        <div class="chat__sub">Typically replies within minutes</div>
+                      </div>
+                      <button id="chatClose" class="icon-btn" aria-label="Close chat">✕</button>
+                    </div>
+                    <div class="chat__body">
+                      <div class="msg msg--agent">Hi there! 👋 How can we help you today?</div>
+                      <div class="msg msg--user">I’d like to know more about pricing.</div>
+                      <div class="msg msg--agent">Sure! Tap the green button to chat on WhatsApp.</div>
+                    </div>
+                    <div class="chat__footer">
+                      <input id="chatInput" class="chat__input" placeholder="Type a message..." />
+                      <button id="chatOpenWA" class="btn btn--primary">Open WhatsApp</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <p class="muted">Position, color, size, badge, and shape reflect your settings.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Automations -->
+      <section id="route-automations" class="route">
+        <div class="card">
+          <h3 class="card__title">Abandoned Cart Reminder</h3>
+          <div class="form-group form-group--inline">
+            <label class="switch">
+              <input id="autoACEnable" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+            <span class="switch-label">Enable automation</span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="autoACDelay">Delay (minutes)</label>
+              <input id="autoACDelay" type="number" min="5" max="240" value="30" />
+            </div>
+            <div class="form-group">
+              <label for="autoACMessage">Message</label>
+              <input id="autoACMessage" type="text" placeholder="You left items in your cart…" />
+            </div>
+          </div>
+          <div class="actions">
+            <button id="autoSave" class="btn btn--primary">Save Automation</button>
+          </div>
+          <p class="muted">This is a demo-only UI. In production, these settings would trigger server-side workflows.</p>
+        </div>
+      </section>
+
+      <!-- Analytics -->
+      <section id="route-analytics" class="route">
+        <div class="card">
+          <div class="analytics-header">
+            <h3 class="card__title">Analytics</h3>
+            <div class="range">
+              <button class="btn btn--secondary range-btn active" data-range="7">7d</button>
+              <button class="btn btn--secondary range-btn" data-range="30">30d</button>
+              <button class="btn btn--secondary range-btn" data-range="90">90d</button>
+            </div>
+          </div>
+          <div class="grid grid--2">
+            <div>
+              <h4>Clicks</h4>
+              <canvas id="clicksChart" width="600" height="220"></canvas>
+            </div>
+            <div>
+              <h4>CTR</h4>
+              <canvas id="ctrChart" width="600" height="220"></canvas>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="table">
+            <div class="table__head">
+              <div>Day</div><div>Visitors</div><div>Clicks</div><div>CTR</div>
+            </div>
+            <div id="tableBody" class="table__body"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support -->
+      <section id="route-support" class="route">
+        <div class="card">
+          <h3 class="card__title">Support</h3>
+          <p>We’re here to help. Choose an option:</p>
+          <div class="actions">
+            <a class="btn btn--primary" href="https://web.whatsapp.com/send?phone=917980730935&text=Feel_Free_to_Ask_any_question" target="_blank" rel="noopener">WhatsApp Support</a>
+            <a class="btn btn--secondary" href="https://way2enjoy.com/shopify/1/whatsapp-chat/review_reryrtyrct.php" target="_blank" rel="noopener">Leave a Review</a>
+            <a class="btn btn--ghost" href="https://way2enjoy.com/shopify/1/whatsapp-chat/plans/upgrade_donate4.php" target="_blank" rel="noopener">Upgrade</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">© <span id="year"></span> WhatsApp Chat Widget — Standalone Demo</footer>
+    </main>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
